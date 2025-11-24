@@ -1,15 +1,19 @@
 import express from "express";
-import { getProfile, updateProfile, getMyLists } from "../controllers/userController.js";
+import { getProfile, updateProfile, getMyLists, searchUsers, deleteProfile } from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
-// Obtener perfil
+// Perfil del usuario
 router.get("/me", protect, getProfile);
-
-// Actualizar perfil
+router.delete("/me", protect, deleteProfile);
 router.put("/me", protect, upload.single("avatar"), updateProfile);
 
-router.get("/me/lists", protect, getMyLists)
+// Listas del usuario
+router.get("/me/lists", protect, getMyLists);
+
+// Buscar usuarios por username
+router.get("/search", protect, searchUsers);
+
 export default router;

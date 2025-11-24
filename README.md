@@ -126,3 +126,53 @@ listController.js para toda la lógica de listas
 listRoutes.js para organizar las rutas
 
 La subida de imágenes (avatars y comentarios) sigue soportada mediante multer.
+
+DÍA 2 – Parte 2
+
+Hemos añadido funcionalidades adicionales para mejorar la experiencia social y de filtrado en Mappeat, así como integración más completa con Google Places.
+
+Funcionalidades completadas
+
+🌐 1. Búsqueda y filtrado de restaurantes
+
+Endpoint GET /places/search permite buscar restaurantes por tipo o palabra clave (query) cerca de una ubicación concreta (location).
+
+Endpoint GET /places/:placeId devuelve detalles de un restaurante específico.
+
+Se devuelve información relevante: nombre, dirección, ubicación, rating de Google, tipos y fotos.
+
+Preparado para mostrar filtros dinámicos en el frontend según categorías de Google Places.
+
+📊 2. Ordenamiento y paginación de listas
+
+Endpoint GET /lists permite filtrar por categoría, ordenar por número de likes o por más reciente.
+
+Paginación configurable (page y limit) para optimizar la carga de datos en frontend.
+
+Las listas públicas pueden visualizarse en orden de creación o popularidad según las necesidades de la interfaz.
+
+👥 3. Búsqueda de usuarios
+
+Endpoint GET /users/search permite buscar usuarios por username (parcial o completo).
+
+Funciona tipo “Instagram”, mostrando nombre de usuario y avatar.
+
+Preparado para futuras interacciones sociales y exploración de contenido.
+
+💡 4. Contador de likes y popularidad de listas
+
+Todas las listas cuentan con array de likes.
+
+Endpoint /lists/popular devuelve las 10 listas públicas más populares ordenadas por número de likes.
+
+Se puede reutilizar en futuras funcionalidades sociales como ranking, recomendaciones o feed dinámico.
+
+🔹 Consideraciones técnicas
+
+Se ha añadido category a los restaurantes dentro de las listas para facilitar filtrado dinámico y futuras integraciones de exploración.
+
+Todas las rutas siguen protegidas por JWT cuando es necesario.
+
+Se mantiene consistencia y modularidad del código en controllers y routes.
+
+Preparado para conectar con frontend y mostrar mapas con pines, filtros por categoría y listas de usuarios o restaurantes destacados.

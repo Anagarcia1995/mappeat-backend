@@ -11,6 +11,10 @@ const restaurantSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
+        category: { 
+            type: String, 
+            default: "" 
+        },
         ratingGoogle: {
             type: Number,
             default: null

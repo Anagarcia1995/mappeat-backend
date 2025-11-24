@@ -8,6 +8,8 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import listRoutes from "./routes/listRoutes.js"
+import placesRoutes from "./routes/placesRoutes.js";
+
 
 
 dotenv.config();
@@ -30,6 +32,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/auth", authRoutes); 
 app.use("/users", userRoutes);
 app.use("/lists", listRoutes);
+app.use("/places", placesRoutes)
 
 app.get("/", (req, res) => {
   res.send("Mappeat API funcionando");

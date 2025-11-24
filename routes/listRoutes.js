@@ -7,27 +7,44 @@ import {
   deleteList,
   toggleFavorite,
   getFavoriteLists,
-  getMyLists
+  getMyLists,
+  getPopularLists,
+  getLists,
+  getCategories
 } from "../controllers/listController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+// Listas del usuario
+router.get("/mine", protect, getMyLists);
 
-//LISTAS DEL USUARIO
-router.get("/mine", protect, getMyLists)
+// Listas populares (ordenadas por ratingGoogle promedio)
+router.get("/popular", getPopularLists);
 
+// Listas públicas filtradas y paginadas
+router.get("/filtered", getLists);
 
-// CRUD LISTAS
-router.post("/", protect, createList);
+// Obtener todas las listas públicas
 router.get("/", getPublicLists);
+
+// Obtener lista por ID
 router.get("/:id", getListById);
+
+// Crear lista
+router.post("/", protect, createList);
+
+// Actualizar lista
 router.put("/:id", protect, updateList);
+
+// Borrar lista
 router.delete("/:id", protect, deleteList);
 
-// FAVORITOS
+// Favoritos
 router.put("/:id/favorite", protect, toggleFavorite);
-router.get("/favorites/me", protect, getFavoriteLists)
+router.get("/favorites/me", protect, getFavoriteLists);
 
+// Endpoint para obtener categorías dinámicas
+router.get("/categories/list", getCategories);
 
 export default router;

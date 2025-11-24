@@ -1,6 +1,6 @@
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
-import List from "../models/ListModel.js"
+import List from "../models/ListModel.js";
 
 // Obtener perfil del usuario logueado
 export const getProfile = async (req, res) => {
@@ -53,13 +53,54 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+// Obtener listas del usuario logueado
 export const getMyLists = async (req, res) => {
   try {
-    const lists = await List.find({ owner : req.user.id })
-    .sort({ createdAt: -1 });
-
+    const lists = await List.find({ owner: req.user.id }).sort({ createdAt: -1 });
     res.json(lists);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener tus listas" });
   }
 };
+
+// BUSCAR USUARIOS POR USERNAME (parcial, tipo Instagram)
+export const searchUsers = async (req, res) => {
+  try {
+    const { query } = req.query;
+    if (!query) return res.status(400).json({ error: "Se requiere un término de búsqueda" });
+
+    const users = await User.find({
+      username: { $regex: query, $options: "i" } // búsqueda insensible a mayúsculas
+    }).select("username avatar");
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Error al buscar usuarios" });
+  }
+};
+
+// BORRAR CUENTA DEL USUARIO
+export const deleteProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
+
+    // Opcional: borrar listas del usuario
+    await List.deleteMany({ owner: req.user.id });
+
+    // Opcional: remover likes del usuario en otras listas
+    await List.updateMany(
+      { likes: req.user.id },
+      { $pull: { likes: req.user.id } }
+    );
+
+    // Borrar usuario
+    await user.deleteOne();
+
+    res.json({ message: "Cuenta eliminada correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al eliminar la cuenta" });
+  }
+};
+
