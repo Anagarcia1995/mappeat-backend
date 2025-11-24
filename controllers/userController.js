@@ -1,5 +1,6 @@
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
+import List from "../models/ListModel.js"
 
 // Obtener perfil del usuario logueado
 export const getProfile = async (req, res) => {
@@ -49,5 +50,16 @@ export const updateProfile = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar perfil" });
+  }
+};
+
+export const getMyLists = async (req, res) => {
+  try {
+    const lists = await List.find({ owner : req.user.id })
+    .sort({ createdAt: -1 });
+
+    res.json(lists);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener tus listas" });
   }
 };

@@ -83,3 +83,46 @@ Hoy hemos dejado lista toda la base: autenticación, perfiles, listas, seguridad
 /////////////////////////////////
 
 DÍA 2
+
+Hoy hemos avanzado con la segunda fase de desarrollo del backend, centrada en la interacción social básica mediante favoritos y gestión de listas propias.
+
+Funcionalidades completadas
+❤️ 1. Favoritos
+
+Implementado sistema de marcar/desmarcar favoritos en listas de restaurantes.
+
+Endpoint PUT /lists/:id/favorite:
+
+Permite a un usuario marcar o quitar una lista como favorita.
+
+Actualiza el array de likes en la base de datos.
+
+Endpoint GET /lists/favorites/me:
+
+Devuelve todas las listas que el usuario ha marcado como favoritas.
+
+Totalmente funcional con JWT y middleware de protección.
+
+📋 2. Mis listas
+
+Endpoint GET /lists/mine:
+
+Devuelve únicamente las listas creadas por el usuario autenticado.
+
+Permite al frontend mostrar el panel de “mis listas”.
+
+Validación de propiedad y seguridad completa.
+
+🔹 Consideraciones técnicas
+
+Todas las rutas sensibles están protegidas con middleware protect que verifica JWT.
+
+Las rutas están estructuradas para que /mine y /favorites/me no colisionen con rutas de parámetros (/:id).
+
+Se mantuvo la modularidad y limpieza del código:
+
+listController.js para toda la lógica de listas
+
+listRoutes.js para organizar las rutas
+
+La subida de imágenes (avatars y comentarios) sigue soportada mediante multer.

@@ -5,11 +5,18 @@ import {
   getListById,
   updateList,
   deleteList,
-  toggleFavorite
+  toggleFavorite,
+  getFavoriteLists,
+  getMyLists
 } from "../controllers/listController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
+
+
+//LISTAS DEL USUARIO
+router.get("/mine", protect, getMyLists)
+
 
 // CRUD LISTAS
 router.post("/", protect, createList);
@@ -20,5 +27,7 @@ router.delete("/:id", protect, deleteList);
 
 // FAVORITOS
 router.put("/:id/favorite", protect, toggleFavorite);
+router.get("/favorites/me", protect, getFavoriteLists)
+
 
 export default router;

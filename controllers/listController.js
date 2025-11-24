@@ -104,3 +104,29 @@ export const toggleFavorite = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar favorito" });
   }
 };
+
+//OBTENER FAVORITOS
+export const getFavoriteLists = async (req, res) => {
+  try {
+    const lists = await List.find({ likes: req.user.id })
+    .populate("owner", "username avatar")
+    .sort({ createdAt: -1 });
+
+    res.json(lists);
+
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener listas favoritas" });
+  }
+};
+
+//OBTENER LISAS DEL USUARIO LOGUEADO
+export const getMyLists = async (req, res) => {
+  try {
+    const lists = await List.find({ owner: req.user.id })
+      .sort({ createdAt: -1 });
+
+    res.json(lists);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener tus listas" });
+  }
+};
